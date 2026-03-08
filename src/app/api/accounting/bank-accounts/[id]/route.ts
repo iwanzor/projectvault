@@ -1,0 +1,26 @@
+import { NextResponse } from "next/server";
+import { apiHandler } from "@/lib/api-handler";
+import { ValidationError } from "@/lib/errors";
+import { updateBankAccountSchema } from "@/lib/validators/accounting";
+import { getBankAccountById, updateBankAccount, deleteBankAccount } from "@/lib/services/bank-account.service";
+import { checkAccountPermission } from "../../_helpers";
+
+export const GET = apiHandler(async (req, { session, params }) => {
+  checkAccountPermission(session, "viewAll");
+  const account = await getBankAccountById(Number(params!.id));
+  return NextResponse.json(account);
+});
+
+export const PUT = apiHandler(async (req, { session, params }) => {
+  checkAccountPermission(session, "canEdit");
+  const body = updateBankAccountSchema.safeParse(await req.json());
+  if (!body.success) throw new ValidationError("Validation failed", body.error.flatten().fieldErrors);
+  const account = await updateBankAccount(Number(params!.id), body.data);
+  return NextResponse.json(account);
+});
+
+export const DELETE = apiHandler(async (req, { session, params }) => {
+  checkAccountPermission(session, "canDelete");
+  await deleteBankAccount(Number(params!.id));
+  return NextResponse.json({ message: "Deleted successfully" });
+});
