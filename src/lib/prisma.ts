@@ -6,14 +6,14 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
+  // PrismaMariaDb uses mariadb package internally - pass config object
   const adapter = new PrismaMariaDb({
-    host: process.env.DB_HOST ?? "localhost",
-    port: parseInt(process.env.DB_PORT ?? "3306"),
-    user: process.env.DB_USER ?? "root",
-    password: process.env.DB_PASSWORD ?? "",
-    database: process.env.DB_NAME ?? "projectvault",
-    connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT ?? "10"),
-    allowPublicKeyRetrieval: true,
+    host: "46.101.215.137",
+    port: 3306,
+    user: "projectvault",
+    password: "K7m$Q4vL9xR2pT8",
+    database: "projectvault",
+    connectionLimit: 10,
   });
 
   return new PrismaClient({ adapter });

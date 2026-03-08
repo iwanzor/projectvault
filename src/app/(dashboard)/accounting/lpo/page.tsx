@@ -57,15 +57,17 @@ export default function LpoPage() {
   const [dateFrom, setDateFrom] = React.useState("");
   const [dateTo, setDateTo] = React.useState("");
 
-  const { data: lpoData = [], isLoading } = useQuery({
+  const { data: lpoResponse, isLoading } = useQuery({
     queryKey: ["lpo-tracking"],
-    queryFn: () => fetchApi<LpoItem[]>("/api/accounting/lpo"),
+    queryFn: () => fetchApi<{ data: LpoItem[] }>("/api/accounting/lpo?pageSize=1000"),
   });
+  const lpoData = lpoResponse?.data ?? [];
 
-  const { data: projects = [] } = useQuery({
+  const { data: projectsResponse } = useQuery({
     queryKey: ["acc-projects-lookup"],
-    queryFn: () => fetchApi<ProjectItem[]>("/api/accounting/acc-projects"),
+    queryFn: () => fetchApi<{ data: ProjectItem[] }>("/api/accounting/acc-projects?pageSize=1000"),
   });
+  const projects = projectsResponse?.data ?? [];
 
   // Client-side filtering
   const filteredData = React.useMemo(() => {

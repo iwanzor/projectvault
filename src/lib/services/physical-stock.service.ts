@@ -57,7 +57,7 @@ export async function listPhysicalStocks(params: ListParams) {
       : {}),
   };
 
-  const [data, total] = await Promise.all([
+  const [rawData, total] = await Promise.all([
     prisma.physicalStock.findMany({
       where,
       orderBy: { [sortBy]: sortOrder },
@@ -67,6 +67,12 @@ export async function listPhysicalStocks(params: ListParams) {
     prisma.physicalStock.count({ where }),
   ]);
 
+  // Convert BigInt to string for JSON serialization
+  const data = rawData.map((item) => ({
+    ...item,
+    autoGenerate: item.autoGenerate.toString(),
+  }));
+
   return { data, total, page, pageSize };
 }
 
@@ -75,7 +81,7 @@ export async function listPhysicalStocks(params: ListParams) {
 export async function getPhysicalStockById(id: number) {
   const stock = await prisma.physicalStock.findUnique({ where: { id } });
   if (!stock) throw new NotFoundError("Physical stock record not found");
-  return stock;
+  return { ...stock, autoGenerate: stock.autoGenerate.toString() };
 }
 
 // ─── Create ───────────────────────────────────────

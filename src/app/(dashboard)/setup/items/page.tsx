@@ -284,12 +284,27 @@ export default function ItemsPage() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  // --- Helpers ---
+
+  function generateBarcode(): string {
+    // Find the max ITM number from existing items
+    const itmItems = items?.data?.filter((i) => i.barcode.startsWith("ITM-")) ?? [];
+    let maxNum = 0;
+    for (const item of itmItems) {
+      const num = parseInt(item.barcode.replace("ITM-", ""), 10);
+      if (!isNaN(num) && num > maxNum) maxNum = num;
+    }
+    const nextNum = maxNum + 1;
+    return `ITM-${String(nextNum).padStart(4, "0")}`;
+  }
+
   // --- Handlers ---
 
   function handleOpenCreate() {
     setEditingItem(null);
+    const newBarcode = generateBarcode();
     form.reset({
-      barcode: "",
+      barcode: newBarcode,
       name: "",
       modelNo: "",
       itemType: "ITEM",

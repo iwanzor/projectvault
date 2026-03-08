@@ -330,7 +330,7 @@ export default function ComboItemsPage() {
                     type="number"
                     step="0.01"
                     placeholder="Qty"
-                    {...form.register(`children.${index}.quantity`)}
+                    {...form.register(`children.${index}.quantity`, { valueAsNumber: true })}
                   />
                   {form.formState.errors.children?.[index]?.quantity && (
                     <p className="text-xs text-red-500">

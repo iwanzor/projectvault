@@ -122,10 +122,11 @@ export default function TimesheetsPage() {
     return params.toString();
   };
 
-  const { data: timesheets = [], isLoading } = useQuery({
+  const { data: timesheetsResponse, isLoading } = useQuery({
     queryKey: ["timesheets", employeeFilter, projectFilter, departmentFilter, dateFrom, dateTo],
-    queryFn: () => fetchApi<Timesheet[]>(`/api/accounting/timesheets?${buildParams()}`),
+    queryFn: () => fetchApi<{ data: Timesheet[] }>(`/api/accounting/timesheets?pageSize=1000&${buildParams()}`),
   });
+  const timesheets = timesheetsResponse?.data ?? [];
 
   const { data: summary } = useQuery({
     queryKey: ["timesheets-summary", dateFrom, dateTo],
@@ -137,35 +138,41 @@ export default function TimesheetsPage() {
     },
   });
 
-  const { data: employees = [] } = useQuery({
+  const { data: employeesResponse } = useQuery({
     queryKey: ["employees-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/employees"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/employees?pageSize=1000"),
   });
+  const employees = employeesResponse?.data ?? [];
 
-  const { data: projects = [] } = useQuery({
+  const { data: projectsResponse } = useQuery({
     queryKey: ["acc-projects-lookup"],
-    queryFn: () => fetchApi<ProjectItem[]>("/api/accounting/acc-projects"),
+    queryFn: () => fetchApi<{ data: ProjectItem[] }>("/api/accounting/acc-projects?pageSize=1000"),
   });
+  const projects = projectsResponse?.data ?? [];
 
-  const { data: positions = [] } = useQuery({
+  const { data: positionsResponse } = useQuery({
     queryKey: ["positions-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/positions"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/positions?pageSize=1000"),
   });
+  const positions = positionsResponse?.data ?? [];
 
-  const { data: departments = [] } = useQuery({
+  const { data: departmentsResponse } = useQuery({
     queryKey: ["departments-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/departments"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/departments?pageSize=1000"),
   });
+  const departments = departmentsResponse?.data ?? [];
 
-  const { data: employeeStatuses = [] } = useQuery({
+  const { data: employeeStatusesResponse } = useQuery({
     queryKey: ["employee-statuses-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/employee-statuses"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/employee-statuses?pageSize=1000"),
   });
+  const employeeStatuses = employeeStatusesResponse?.data ?? [];
 
-  const { data: remarks = [] } = useQuery({
+  const { data: remarksResponse } = useQuery({
     queryKey: ["remarks-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/remarks"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/remarks?pageSize=1000"),
   });
+  const remarks = remarksResponse?.data ?? [];
 
   // Client-side filter for department
   const filteredTimesheets = React.useMemo(() => {

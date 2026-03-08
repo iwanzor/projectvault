@@ -31,6 +31,7 @@ export function PermissionGate({
   if (!session?.user) return <>{fallback}</>;
 
   const user = session.user as {
+    isAdmin?: boolean;
     role?: string;
     privileges?: Array<{
       module: string;
@@ -43,7 +44,7 @@ export function PermissionGate({
   };
 
   // Admin bypasses all permission checks
-  if (user.role === "ADMIN") return <>{children}</>;
+  if (user.isAdmin || user.role === "ADMIN") return <>{children}</>;
 
   const privileges = user.privileges;
   if (!privileges) return <>{fallback}</>;
@@ -63,6 +64,7 @@ export function useHasPermission(module: Module, action: Action): boolean {
   if (!session?.user) return false;
 
   const user = session.user as {
+    isAdmin?: boolean;
     role?: string;
     privileges?: Array<{
       module: string;
@@ -74,7 +76,7 @@ export function useHasPermission(module: Module, action: Action): boolean {
     }>;
   };
 
-  if (user.role === "ADMIN") return true;
+  if (user.isAdmin || user.role === "ADMIN") return true;
 
   const privileges = user.privileges;
   if (!privileges) return false;

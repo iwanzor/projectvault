@@ -148,35 +148,41 @@ export function TransactionForm({
 
   // --- Lookup data ---
 
-  const { data: projects = [] } = useQuery({
+  const { data: projectsResponse } = useQuery({
     queryKey: ["acc-projects-lookup"],
-    queryFn: () => fetchApi<ProjectItem[]>("/api/accounting/acc-projects"),
+    queryFn: () => fetchApi<{ data: ProjectItem[] }>("/api/accounting/acc-projects?pageSize=1000"),
   });
+  const projects = projectsResponse?.data ?? [];
 
-  const { data: purposes = [] } = useQuery({
+  const { data: purposesResponse } = useQuery({
     queryKey: ["purposes-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/purposes"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/purposes?pageSize=1000"),
   });
+  const purposes = purposesResponse?.data ?? [];
 
-  const { data: paymentChannels = [] } = useQuery({
+  const { data: paymentChannelsResponse } = useQuery({
     queryKey: ["payment-channels-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/payment-channels"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/payment-channels?pageSize=1000"),
   });
+  const paymentChannels = paymentChannelsResponse?.data ?? [];
 
-  const { data: banks = [] } = useQuery({
+  const { data: banksResponse } = useQuery({
     queryKey: ["banks-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/banks"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/banks?pageSize=1000"),
   });
+  const banks = banksResponse?.data ?? [];
 
-  const { data: paymentTypes = [] } = useQuery({
+  const { data: paymentTypesResponse } = useQuery({
     queryKey: ["payment-types-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/payment-types"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/payment-types?pageSize=1000"),
   });
+  const paymentTypes = paymentTypesResponse?.data ?? [];
 
-  const { data: currencies = [] } = useQuery({
+  const { data: currenciesResponse } = useQuery({
     queryKey: ["currencies-lookup"],
-    queryFn: () => fetchApi<CurrencyItem[]>("/api/setup/currencies"),
+    queryFn: () => fetchApi<{ data: CurrencyItem[] }>("/api/setup/currencies?pageSize=1000"),
   });
+  const currencies = currenciesResponse?.data ?? [];
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

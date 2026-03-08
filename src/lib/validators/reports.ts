@@ -34,7 +34,7 @@ export const activityLogSchema = z.object({
   userId: z.coerce.number().int().positive().optional(),
   module: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
 });
 
 // ─── Project Report ─────────────────────────────────
@@ -110,7 +110,7 @@ export const fsfDetailSchema = z.object({
 
 export const listFsfSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   branchCode: z.string().optional(),
   type: z.string().optional(),
   fsfCategory: z.string().optional(),

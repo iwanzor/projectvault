@@ -74,7 +74,7 @@ const grrnItemSchema = z.object({
 
 export const listPurchaseOrdersSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   status: z.enum(["DRAFT", "APPROVED", "RECEIVED", "CANCELLED"]).optional(),
   supplierId: z.coerce.number().int().positive().optional(),
@@ -121,7 +121,7 @@ export const updatePurchaseOrderSchema = z.object({
 
 export const listGrnsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   supplierId: z.coerce.number().int().positive().optional(),
   purchaseOrderNo: z.string().optional(),
@@ -155,7 +155,7 @@ export const updateGrnSchema = z.object({
 
 export const listGinsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   projectNo: z.string().optional(),
   dateFrom: z.string().optional(),
@@ -186,7 +186,7 @@ export const updateGinSchema = z.object({
 
 export const listGtnsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   fromProjectNo: z.string().optional(),
   toProjectNo: z.string().optional(),
@@ -222,7 +222,7 @@ export const updateGtnSchema = z.object({
 
 export const listGrrnsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   projectNo: z.string().optional(),
   dateFrom: z.string().optional(),
@@ -253,7 +253,7 @@ export const updateGrrnSchema = z.object({
 
 export const listPhysicalStocksSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   projectNo: z.string().optional(),
   barcode: z.string().optional(),

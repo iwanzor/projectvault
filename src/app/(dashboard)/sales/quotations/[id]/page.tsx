@@ -8,7 +8,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { Plus, Trash2, ArrowLeft, Check, Copy, Pencil, Type, Send, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
-import { format } from "date-fns";
+import { formatDate, formatDateTime } from "@/lib/utils/date";
 
 import { fetchApi } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -474,7 +474,7 @@ export default function QuotationDetailPage() {
               <StatusBadge status={quotation.status} statusMap={quotationStatusMap} />
             </div>
             <p className="text-sm text-zinc-500">
-              {quotation.customer?.name} | {format(new Date(quotation.quotationDate), "dd/MM/yyyy")}
+              {quotation.customer?.name} | {formatDate(quotation.quotationDate)}
             </p>
           </div>
         </div>
@@ -790,7 +790,7 @@ export default function QuotationDetailPage() {
                 </div>
                 <div>
                   <div className="text-xs text-zinc-500 mb-1">Date</div>
-                  <div className="font-medium">{format(new Date(quotation.quotationDate), "dd/MM/yyyy")}</div>
+                  <div className="font-medium">{formatDate(quotation.quotationDate)}</div>
                 </div>
                 <div>
                   <div className="text-xs text-zinc-500 mb-1">Terms</div>
@@ -939,7 +939,7 @@ export default function QuotationDetailPage() {
                               <p className="text-sm">{remark.remark}</p>
                               <p className="text-xs text-zinc-400 mt-1">
                                 {remark.user?.name ?? remark.createdBy ?? "System"} -{" "}
-                                {format(new Date(remark.createdAt), "dd/MM/yyyy HH:mm")}
+                                {formatDateTime(remark.createdAt)}
                               </p>
                             </div>
                             <div className="flex gap-1">

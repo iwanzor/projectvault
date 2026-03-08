@@ -44,15 +44,17 @@ export default function ArchivePage() {
     return params.toString();
   };
 
-  const { data: transactions = [], isLoading } = useQuery({
+  const { data: transactionsResponse, isLoading } = useQuery({
     queryKey: ["archived-transactions", projectFilter, categoryFilter, dateFrom, dateTo],
-    queryFn: () => fetchApi<Transaction[]>(`/api/accounting/transactions?${buildParams()}`),
+    queryFn: () => fetchApi<{ data: Transaction[] }>(`/api/accounting/transactions?pageSize=1000&${buildParams()}`),
   });
+  const transactions = transactionsResponse?.data ?? [];
 
-  const { data: projects = [] } = useQuery({
+  const { data: projectsResponse } = useQuery({
     queryKey: ["acc-projects-lookup"],
-    queryFn: () => fetchApi<ProjectItem[]>("/api/accounting/acc-projects"),
+    queryFn: () => fetchApi<{ data: ProjectItem[] }>("/api/accounting/acc-projects?pageSize=1000"),
   });
+  const projects = projectsResponse?.data ?? [];
 
   const columns: ColumnDef<Transaction, unknown>[] = [
     { accessorKey: "transactionNo", header: "Transaction No" },

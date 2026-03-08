@@ -8,6 +8,7 @@ const LOCKOUT_THRESHOLD = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {
@@ -15,6 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("[AUTH] authorize called with:", credentials?.username);
         const username = credentials?.username;
         const password = credentials?.password;
 
@@ -24,13 +26,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           !username ||
           !password
         ) {
+          console.log("[AUTH] Missing username or password");
           throw new Error("Username and password are required.");
         }
 
+        console.log("[AUTH] Looking up user:", username);
         const user = await prisma.user.findUnique({
           where: { username },
           include: { privileges: true },
         });
+        console.log("[AUTH] User found:", user ? user.id : "NOT FOUND");
 
         if (!user) {
           throw new Error("Invalid username or password.");
@@ -58,10 +63,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           });
         }
 
+        console.log("[AUTH] Checking password...");
         const passwordMatch = await bcrypt.compare(
           password,
           user.passwordHash
         );
+        console.log("[AUTH] Password match:", passwordMatch);
 
         if (!passwordMatch) {
           const newFailedAttempts = (user.failedAttempts ?? 0) + 1;
@@ -107,7 +114,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           canDelete: p.canDelete,
         }));
 
-        return {
+        const result = {
           id: String(user.id),
           userCode: user.userCode,
           username: user.username,
@@ -115,6 +122,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           isAdmin: user.isAdmin,
           permissions,
         };
+        console.log("[AUTH] Returning user:", result.username, result.id);
+        return result;
       },
     }),
   ],
@@ -127,6 +136,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
+      console.log("[AUTH] jwt callback, user:", user?.username);
       if (user) {
         token.id = user.id!;
         token.userCode = user.userCode;
@@ -138,6 +148,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      console.log("[AUTH] session callback, token.username:", token.username);
       session.user.id = token.id;
       session.user.userCode = token.userCode;
       session.user.username = token.username;

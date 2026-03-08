@@ -69,10 +69,11 @@ export default function PayablesPage() {
     return params.toString();
   };
 
-  const { data: transactions = [], isLoading } = useQuery({
+  const { data: transactionsResponse, isLoading } = useQuery({
     queryKey: ["payables", projectFilter, purposeFilter, channelFilter, dateFrom, dateTo],
-    queryFn: () => fetchApi<Transaction[]>(`/api/accounting/transactions?${buildParams()}`),
+    queryFn: () => fetchApi<{ data: Transaction[] }>(`/api/accounting/transactions?pageSize=1000&${buildParams()}`),
   });
+  const transactions = transactionsResponse?.data ?? [];
 
   const { data: summary } = useQuery({
     queryKey: ["payables-summary", dateFrom, dateTo],
@@ -85,20 +86,23 @@ export default function PayablesPage() {
     },
   });
 
-  const { data: projects = [] } = useQuery({
+  const { data: projectsResponse } = useQuery({
     queryKey: ["acc-projects-lookup"],
-    queryFn: () => fetchApi<ProjectItem[]>("/api/accounting/acc-projects"),
+    queryFn: () => fetchApi<{ data: ProjectItem[] }>("/api/accounting/acc-projects?pageSize=1000"),
   });
+  const projects = projectsResponse?.data ?? [];
 
-  const { data: purposes = [] } = useQuery({
+  const { data: purposesResponse } = useQuery({
     queryKey: ["purposes-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/purposes"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/purposes?pageSize=1000"),
   });
+  const purposes = purposesResponse?.data ?? [];
 
-  const { data: paymentChannels = [] } = useQuery({
+  const { data: paymentChannelsResponse } = useQuery({
     queryKey: ["payment-channels-lookup"],
-    queryFn: () => fetchApi<SelectItem[]>("/api/accounting/payment-channels"),
+    queryFn: () => fetchApi<{ data: SelectItem[] }>("/api/accounting/payment-channels?pageSize=1000"),
   });
+  const paymentChannels = paymentChannelsResponse?.data ?? [];
 
   // --- Filtered data ---
 

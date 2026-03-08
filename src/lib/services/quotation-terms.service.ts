@@ -4,7 +4,9 @@ import { NotFoundError, AppError } from "@/lib/errors";
 import type { ListParams } from "@/lib/validators/setup";
 
 export async function listQuotationTerms(params: ListParams) {
-  const { page, pageSize, search, sortBy, sortOrder } = params;
+  const { page, pageSize, search, sortOrder } = params;
+  // QuotationTerms doesn't have 'name' field, default to 'quotationTermsCode'
+  const sortBy = params.sortBy === "name" ? "quotationTermsCode" : params.sortBy;
   const where: Prisma.QuotationTermsWhereInput = search
     ? { OR: [{ terms: { contains: search } }, { quotationTermsCode: { contains: search } }] }
     : {};

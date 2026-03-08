@@ -17,6 +17,9 @@ export async function listComboItems(params: ListParams & { parentItemId?: numbe
       : {}),
   };
 
+  // ComboItem doesn't have createdAt, use id as default
+  const effectiveSortBy = sortBy === "createdAt" ? "id" : sortBy;
+  
   const [data, total] = await Promise.all([
     prisma.comboItem.findMany({
       where,
@@ -24,7 +27,7 @@ export async function listComboItems(params: ListParams & { parentItemId?: numbe
         parentItem: { select: { id: true, barcode: true, name: true } },
         childItem: { select: { id: true, barcode: true, name: true } },
       },
-      orderBy: sortBy === "name" ? { parentItem: { name: sortOrder } } : { [sortBy]: sortOrder },
+      orderBy: effectiveSortBy === "name" ? { parentItem: { name: sortOrder } } : { [effectiveSortBy]: sortOrder },
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),

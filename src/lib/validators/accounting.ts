@@ -6,7 +6,7 @@ import { z } from "zod/v4";
 
 export const listBanksSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("name"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -50,7 +50,7 @@ export const updateBankSchema = z.object({
 
 export const listBankAccountsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   bankId: z.coerce.number().int().positive().optional(),
   sortBy: z.string().default("accountNo"),
@@ -79,7 +79,7 @@ export const updateBankAccountSchema = z.object({
 
 export const listPaymentTypesSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("paymentTypeCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -101,7 +101,7 @@ export const updatePaymentTypeSchema = z.object({
 
 export const listPaymentChannelsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("paymentChannelCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -123,7 +123,7 @@ export const updatePaymentChannelSchema = z.object({
 
 export const listPurposesSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("purposeCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -145,7 +145,7 @@ export const updatePurposeSchema = z.object({
 
 export const listTransactionsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   category: z.enum(["INCOME", "EXPENSE"]).optional(),
   projectNo: z.string().optional(),
@@ -248,7 +248,7 @@ const invTransactionDetailSchema = z.object({
 
 export const listInvTransactionsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   projectNo: z.string().optional(),
   dateFrom: z.string().optional(),
@@ -291,7 +291,7 @@ export const updateInvTransactionSchema = z.object({
 
 export const listEmployeesSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   isActive: z.coerce.boolean().optional(),
   sortBy: z.string().default("employeeCode"),
@@ -322,7 +322,7 @@ export const updateEmployeeSchema = z.object({
 
 export const listEmployeeStatusesSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("statusCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -346,7 +346,7 @@ export const updateStatusSchema = z.object({
 
 export const listPositionsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("positionCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -370,7 +370,7 @@ export const updatePositionSchema = z.object({
 
 export const listDepartmentsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("departmentCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -394,7 +394,7 @@ export const updateDepartmentSchema = z.object({
 
 export const listAccProjectsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("projectCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -418,7 +418,7 @@ export const updateAccProjectSchema = z.object({
 
 export const listRemarksSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   sortBy: z.string().default("remarkCode"),
   sortOrder: z.enum(["asc", "desc"]).default("asc"),
@@ -442,7 +442,7 @@ export const updateRemarkSchema = z.object({
 
 export const listTimesheetsSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   employeeId: z.coerce.number().int().positive().optional(),
   projectId: z.coerce.number().int().positive().optional(),
@@ -491,7 +491,7 @@ export const timesheetSummarySchema = z.object({
 
 export const listLpoSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  pageSize: z.coerce.number().int().min(1).max(1000).default(20),
   search: z.string().optional(),
   projectId: z.coerce.number().int().positive().optional(),
   sortBy: z.string().default("lpoDate"),

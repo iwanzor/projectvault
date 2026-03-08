@@ -26,6 +26,14 @@ interface StatusBadgeProps extends Omit<BadgeProps, "variant"> {
 }
 
 export function StatusBadge({ status, statusMap, ...props }: StatusBadgeProps) {
+  if (!status) {
+    return (
+      <Badge variant="secondary" {...props}>
+        -
+      </Badge>
+    );
+  }
+  
   const map = statusMap ?? defaultStatusMap;
   const config = map[status.toLowerCase()] ?? {
     label: status,
